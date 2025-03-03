@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home - Medical Supply Distribution{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+        color: #ffffff;
+        font-family: 'Arial', sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6); /* Dark overlay for readability */
+    }
+    .container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        z-index: 1;
+    }
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+    p {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+    }
+    .btn {
+        background-color: #ff9800;
+        color: #121212;
+        padding: 12px 24px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.3s ease-in-out;
+    }
+    .btn:hover {
+        background-color: #e68900;
+        transform: scale(1.05);
+    }
+</style>
+
+<div class="overlay"></div>
+
+<div class="container">
+    <h1>Welcome to the Medical Supply Distribution System</h1>
+    <p>Efficiently allocate medical resources with cost minimization.</p>
+    <a href="{% url 'optimize' %}" class="btn">Start Optimization</a>
+</div>
+{% endblock %}

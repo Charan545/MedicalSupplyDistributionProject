@@ -8,10 +8,11 @@ class Hospital(models.Model):
     def __str__(self):
         return self.name
 
-class MedicalSupply(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    total_quantity = models.IntegerField(default=0)  # ✅ Ensure it's an integer, NOT timezone.now
 
+class MedicalSupply(models.Model):
+    name = models.CharField(max_length=255)
+    total_quantity = models.IntegerField()
+    
     def __str__(self):
         return self.name
 

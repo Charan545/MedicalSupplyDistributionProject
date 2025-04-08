@@ -5,14 +5,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Resource Allocation</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link to CSS -->
+    <title>{% block title %}Medical Supply Optimization{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/optimize.css' %}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="{% static 'js/optimize.js' %}"></script>
+
+
+
 </head>
 <body>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+    
     <header>
-        <h1>Hospital Resource Allocation</h1>
-        <nav>
-            <ul>
+        
+        <nav class="navbar">
+            <div class="logo">Medical Distribution</div>
+            <ul class="nav-links">
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'optimize' %}">Optimize</a></li>
                 <li><a href="{% url 'admin:index' %}">Admin</a></li>
@@ -21,15 +36,11 @@
     </header>
 
     <main>
-        <section class="intro">
-            <h2>Optimize Medical Supply Distribution</h2>
-            <p>Our tool helps hospitals efficiently distribute medical supplies while minimizing costs.</p>
-            <a href="{% url 'optimize' %}" class="btn">Start Optimization</a>
-        </section>
+        {% block content %}{% endblock %}
     </main>
 
-    <footer>
-        <p>&copy; 2025 Medical Supply Optimization | All Rights Reserved</p>
-    </footer>
+
+    {% include 'footer.html' %}
+
 </body>
 </html>

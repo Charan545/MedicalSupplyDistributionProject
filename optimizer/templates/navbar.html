@@ -1,0 +1,10 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+
+<nav>
+    <ul class="nav-links">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'optimize' %}">Optimize</a></li>
+        <li><a href="{% url 'admin:index' %}">Admin Panel</a></li>
+    </ul>
+</nav>

@@ -1,127 +1,169 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Optimization Process</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body {
-            background-color: #121212;
-            color: #fff;
-            font-family: "Poppins", sans-serif;
-            text-align: center;
-        }
-        .container {
-            margin-top: 50px;
-        }
-        h1, h3 {
-            font-weight: 600;
-            animation: fadeIn 1s ease-in-out;
-        }
-        .btn-custom {
-            background: linear-gradient(135deg, #ff8c00, #ff4500);
-            color: white;
-            font-size: 18px;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            transition: transform 0.3s ease, background 0.3s;
-        }
-        .btn-custom:hover {
-            transform: scale(1.05);
-            background: linear-gradient(135deg, #ff4500, #ff8c00);
-        }
-        .result-container {
-            margin-top: 30px;
-            display: none;
-            animation: fadeIn 1s ease-in-out;
-        }
-        .loader {
-            display: none;
-            border: 4px solid #fff;
-            border-top: 4px solid #ff4500;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-        table {
-            width: 100%;
-            max-width: 600px;
-            margin: auto;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid #ff4500;
-        }
-        th, td {
-            padding: 10px;
-            text-align: center;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Optimization Process</h1>
-        <button id="startOptimization" class="btn btn-custom mt-3">Start Optimization</button>
-        <div class="loader"></div>
-        <div id="result" class="result-container"></div>
+{% extends "base.html" %}
+{% block content %}
+<section class="optimize-intro">
+    <h1>Optimize Medical Supply Distribution</h1>
+    <p>
+        This tool helps efficiently allocate medical supplies to hospitals and clinics 
+        while minimizing costs and ensuring timely delivery. By using mathematical optimization, 
+        we can find the best way to distribute resources based on demand, supply, and transportation constraints.
+    </p>
+    <p>
+        Enter your data below to get an optimized distribution plan.
+    </p>
+</section>
+
+<section class="optimize-form">
+    <h2>Enter Medical Supply Data</h2>
+    
+    <form id="optimizationForm" method="post">
+        {% csrf_token %}
+        
+        <label for="num_hospitals">Number of Hospitals:</label>
+        <input type="number" id="num_hospitals" name="num_hospitals" min="1" required>
+        
+        <label for="num_centers">Number of Supply Centers:</label>
+        <input type="number" id="num_centers" name="num_centers" min="1" required>
+        
+        <button type="button" onclick="generateFields()">Next</button>
+        
+        <div id="dynamicFields"></div>
+        
+        <button type="submit" style="display:none;" id="submitBtn">Optimize</button>
+    </form>
+</section>
+
+<div id="optimizationResults"></div>
+
+<section class="optimize-container">
+    <h1>Real-Time Medical Supply Optimization</h1>
+    <p>Live updates of hospital supply levels.</p>
+
+    <div class="status">
+        <p>Hospital 1 Supply: <span id="hospital1">--</span></p>
+        <p>Hospital 2 Supply: <span id="hospital2">--</span></p>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            $("#startOptimization").click(function() {
-                $(".loader").show();
-                $("#result").hide().html("");
+    <div class="plot-section">
+        <div id="plot3d"></div>
+    </div>
+</section>
 
-                $.ajax({
-                    url: "{% url 'optimize' %}",
-                    type: "POST",
-                    data: {csrfmiddlewaretoken: "{{ csrf_token }}"},
-                    success: function(response) {
-                        $(".loader").hide();
-                        if (response.status === "Success") {
-                            let table = "<h3>Optimized Allocation</h3><table class='table table-dark'><tr><th>Hospital</th>";
-                            let firstHospital = Object.keys(response.optimized_allocation)[0];
+<script>
+    function generateFields() {
+        const numHospitals = parseInt(document.getElementById("num_hospitals").value);
+        const numCenters = parseInt(document.getElementById("num_centers").value);
+        const container = document.getElementById("dynamicFields");
 
-                            for (let item in response.optimized_allocation[firstHospital]) {
-                                table += `<th>${item.charAt(0).toUpperCase() + item.slice(1)}</th>`;
-                            }
-                            table += "</tr>";
+        container.innerHTML = "";
 
-                            for (let hospital in response.optimized_allocation) {
-                                let data = response.optimized_allocation[hospital];
-                                table += `<tr><td>${hospital}</td>`;
-                                for (let item in data) {
-                                    table += `<td>${data[item]}</td>`;
-                                }
-                                table += "</tr>";
-                            }
+        // Supply Inputs
+        const supplyHeader = document.createElement("h3");
+        supplyHeader.innerText = "Supply from Centers";
+        container.appendChild(supplyHeader);
+        for (let i = 0; i < numCenters; i++) {
+            const input = document.createElement("input");
+            input.type = "number";
+            input.name = "supply";
+            input.placeholder = `Center ${i + 1} Supply`;
+            input.required = true;
+            container.appendChild(input);
+        }
 
-                            table += "</table>";
-                            $("#result").html(table).fadeIn();
-                        } else {
-                            $("#result").html("<p style='color: red;'>Optimization failed!</p>").fadeIn();
-                        }
-                    },
-                    error: function() {
-                        $(".loader").hide();
-                        $("#result").html("<p style='color: red;'>Error in Optimization!</p>").fadeIn();
-                    }
-                });
-            });
+        // Demand Inputs
+        const demandHeader = document.createElement("h3");
+        demandHeader.innerText = "Demand at Hospitals";
+        container.appendChild(demandHeader);
+        for (let i = 0; i < numHospitals; i++) {
+            const input = document.createElement("input");
+            input.type = "number";
+            input.name = "demand";
+            input.placeholder = `Hospital ${i + 1} Demand`;
+            input.required = true;
+            container.appendChild(input);
+        }
+
+        // Cost Matrix Inputs
+        const costHeader = document.createElement("h3");
+        costHeader.innerText = "Cost Matrix (from Centers to Hospitals)";
+        container.appendChild(costHeader);
+        for (let i = 0; i < numCenters; i++) {
+            for (let j = 0; j < numHospitals; j++) {
+                const input = document.createElement("input");
+                input.type = "number";
+                input.name = "cost";
+                input.placeholder = `Cost C${i + 1} to H${j + 1}`;
+                input.required = true;
+                container.appendChild(input);
+            }
+            container.appendChild(document.createElement("br"));
+        }
+
+        // Show submit button
+        document.getElementById("submitBtn").style.display = "block";
+    }
+
+    document.getElementById("optimizationForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const supply = Array.from(document.querySelectorAll("input[name='supply']")).map(i => parseInt(i.value));
+        const demand = Array.from(document.querySelectorAll("input[name='demand']")).map(i => parseInt(i.value));
+        const costInputs = Array.from(document.querySelectorAll("input[name='cost']")).map(i => parseInt(i.value));
+
+        const numCenters = supply.length;
+        const numHospitals = demand.length;
+        const cost_matrix = [];
+
+        for (let i = 0; i < numCenters; i++) {
+            const row = [];
+            for (let j = 0; j < numHospitals; j++) {
+                row.push(costInputs[i * numHospitals + j]);
+            }
+            cost_matrix.push(row);
+        }
+
+        fetch("/optimize/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
+            },
+            body: JSON.stringify({
+                supply,
+                demand,
+                cost_matrix
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            const outputDiv = document.getElementById("optimizationResults");
+            if (data.success) {
+                const table = data.distribution.map(row => `<tr>${row.map(v => `<td>${v}</td>`).join('')}</tr>`).join('');
+                outputDiv.innerHTML = `
+                    <h2>Optimized Distribution Matrix</h2>
+                    <table border="1" cellpadding="5"><tbody>${table}</tbody></table>
+                `;
+            } else {
+                outputDiv.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+            }
+        })
+        .catch(error => {
+            document.getElementById("optimizationResults").innerHTML = `<div class="alert alert-danger">${error}</div>`;
         });
-    </script>
-</body>
-</html>
+    });
+
+    function updateSupplyStatus() {
+        fetch("/api/optimization-data/")
+            .then(response => response.json())
+            .then(data => {
+                if (!data.error) {
+                    document.getElementById("hospital1").textContent = data.hospital1 || "--";
+                    document.getElementById("hospital2").textContent = data.hospital2 || "--";
+                }
+            })
+            .catch(error => console.error("Error fetching data:", error));
+    }
+
+    setInterval(updateSupplyStatus, 10000);
+</script>
+
+{% endblock %}

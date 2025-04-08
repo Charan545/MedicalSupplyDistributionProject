@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #0f0f0f;
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+h1, h2 {
+  color: #14b8a6;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #cccccc;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+section {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.optimize-intro {
+  background-color: rgba(20, 20, 20, 0.7);
+  margin: 40px auto;
+  padding: 40px;
+  width: 80%;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.optimize-form {
+  background-color: #1a1a1a;
+  padding: 40px;
+  border-radius: 20px;
+  width: 80%;
+  margin: 30px auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+label {
+  display: block;
+  margin: 20px 0 5px;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+input[type="number"] {
+  padding: 10px;
+  width: 200px;
+  border: none;
+  border-radius: 10px;
+  background-color: #2c2c2c;
+  color: #fff;
+}
+
+button {
+  padding: 10px 20px;
+  margin-top: 20px;
+  background-color: #14b8a6;
+  color: #0f0f0f;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background-color: #0d9488;
+  color: #ffffff;
+}
+
+#dynamicFields {
+  margin-top: 30px;
+}
+
+#submitBtn {
+  display: block;
+  margin: 30px auto 0;
+}
+
+#optimizationResults {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #1c1c1c;
+  border-radius: 15px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.optimize-container {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.status {
+  margin: 30px 0;
+  font-size: 1.2rem;
+}
+
+.plot-section {
+  margin-top: 30px;
+  background-color: #121212;
+  padding: 30px;
+  border-radius: 20px;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}

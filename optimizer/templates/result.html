@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cost Minimization Result</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <nav>
+        <h2>Optimal Distribution Tool</h2>
+        <a href="/">Back to Input Page</a>
+    </nav>
+
+    <div class="container">
+        <h1>Cost Minimization Graph</h1>
+        <p>Total Cost Saved: <span>$200</span></p>
+        <div class="graph-card">
+            <canvas id="costChart"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('costChart').getContext('2d');
+        const costChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Hospital A', 'Hospital B', 'Hospital C', 'Hospital D'],
+                datasets: [{
+                    label: 'Cost in USD',
+                    data: [500, 400, 300, 200],
+                    borderColor: '#14b8a6',
+                    backgroundColor: 'rgba(20, 184, 166, 0.2)',
+                    pointBackgroundColor: '#14b8a6',
+                    pointRadius: 5,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: true,
+                        labels: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                scales: {
+                    x: { ticks: { color: '#aaa' } },
+                    y: { ticks: { color: '#aaa' } }
+                }
+            }
+        });
+    </script>
+    <div class="container">
+        
+        <div class="graph-card">
+          <canvas id="costGraph"></canvas>
+        </div>
+      
+        <button class="download-btn" onclick="downloadPDF()">Download PDF Report</button>
+      </div>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+<script>
+  function downloadPDF() {
+    const element = document.querySelector('.graph-card');
+    const opt = {
+      margin: 10,
+      filename: 'Cost_Minimization_Report.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().from(element).set(opt).save();
+  }
+</script>
+
+</body>
+</html>

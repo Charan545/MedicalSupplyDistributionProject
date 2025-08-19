@@ -1,4 +1,5 @@
 # Medical Supply Distribution
+![Screenshot](1.jpg)
 
 ## Overview
 A project aimed at optimizing the distribution process of medical supplies to ensure timely delivery and efficient resource allocation.This tool helps efficiently allocate medical supplies to hospitals and clinics while minimizing costs and ensuring timely delivery. By using mathematical optimization, we can find the best way to distribute resources based on demand, supply, and transportation constraints.
@@ -17,14 +18,15 @@ pip install -r requirements.txt
 
 3. Run the application 
 
-## Usage
-![Screenshot](images/screenshot.png)
+![Screenshot](2.jpg)
 
 ## Technologies Used
 - Python  
 - Pandas, NumPy for data processing  
 - Matplotlib/Seaborn for visualization  
 - Additional tools or libraries you used
+
+![Screenshot](3.jpg)
 
 ## Contribution
 Contributions are welcome! Please open issues or pull requests.
